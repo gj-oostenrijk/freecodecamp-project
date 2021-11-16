@@ -11,23 +11,20 @@ function App() {
       <header className="App-header">
         <Container>
           <Row>
-            <Col><CheckUserAge /></Col>
+            <Col><OnlineUsers /></Col>
+            <Col><MyToDoList /></Col>
+            <Col><GateKeeper /></Col>
           </Row>
           <Row>
+            <Col><CheckUserAge /></Col>
             <Col><AddUser /></Col>
             <Col><ToggleDisplayANDAND/></Col>
           </Row>
           <Row>
-          <Col><ControlledInput /></Col>
-            <Col>
-              <ChangeText />
-            </Col>
-            <Col>
-              <MakeVisible />
-            </Col>
-            <Col>
-              <Counter />
-            </Col>
+            <Col><ControlledInput /></Col>
+            <Col><ChangeText /></Col>
+            <Col><MakeVisible /></Col>
+            <Col><Counter /></Col>
           </Row>
           <Row>
             <Col>
@@ -396,6 +393,130 @@ class CheckUserAge extends React.Component {
             ? buttonThree
             : buttonTwo}
         {/* Change code above this line */}
+      </div>
+    );
+  }
+}
+
+class GateKeeper extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      input: ''
+    };
+    this.handleChange = this.handleChange.bind(this);
+  }
+  handleChange(event) {
+    this.setState({ input: event.target.value })
+  }
+  render() {
+    let inputStyle = {
+      border: '1px solid black'
+    };
+    // Change code below this line
+    if (this.state.input.length > 15) {
+      inputStyle.border = '3px solid red';
+    }
+    // Change code above this line
+    return (
+      <div>
+        <h3>Don't Type Too Much:</h3>
+        <input
+          type="text"
+          style={inputStyle}
+          value={this.state.input}
+          onChange={this.handleChange} />
+      </div>
+    );
+  }
+};
+
+const textAreaStyles = {
+  width: 235,
+  margin: 5
+};
+
+class MyToDoList extends React.Component {
+  constructor(props) {
+    super(props);
+    // Change code below this line
+    this.state = {
+      userInput: "",
+      toDoList: []
+    };
+    // Change code above this line
+    this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleChange = this.handleChange.bind(this);
+  }
+  handleSubmit() {
+    const itemsArray = this.state.userInput.split(',');
+    this.setState({
+      toDoList: itemsArray
+    });
+  }
+  handleChange(e) {
+    this.setState({
+      userInput: e.target.value
+    });
+  }
+  render() {
+    const items = this.state.toDoList.map(item => <li key={item}>{item}</li>);
+    return (
+      <div>
+        <textarea
+          onChange={this.handleChange}
+          value={this.state.userInput}
+          style={textAreaStyles}
+          placeholder='Separate Items With Commas'
+        />
+        <br />
+        <button onClick={this.handleSubmit}>Create List</button>
+        <h1>My "To Do" List:</h1>
+        <ul>{items}</ul>
+      </div>
+    );
+  }
+}
+
+class OnlineUsers extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      users: [
+        {
+          username: 'Jeff',
+          online: true
+        },
+        {
+          username: 'Alan',
+          online: false
+        },
+        {
+          username: 'Mary',
+          online: true
+        },
+        {
+          username: 'Jim',
+          online: false
+        },
+        {
+          username: 'Sara',
+          online: true
+        },
+        {
+          username: 'Laura',
+          online: true
+        }
+      ]
+    };
+  }
+  render() {
+    const usersOnline = this.state.users.filter(user => user.online); // Change this line
+    const renderOnline = usersOnline.map(user => <li key={user.username}>{user.username}</li>); // Change this line
+    return (
+      <div>
+        <h1>Current Online Users:</h1>
+        <ul>{renderOnline}</ul>
       </div>
     );
   }
